@@ -21,21 +21,24 @@ public class GameController implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        if (keyCode == KeyEvent.VK_UP) {
-            grid.changeDirection(Direction.UP);
-        }
-        if (keyCode == KeyEvent.VK_DOWN) {
-            grid.changeDirection(Direction.DOWN);
-        }
-        if (keyCode == KeyEvent.VK_RIGHT) {
-            grid.changeDirection(Direction.RIGHT);
-        }
-        if (keyCode == KeyEvent.VK_LEFT) {
-            grid.changeDirection(Direction.LEFT);
+        switch (keyCode) {
+            case KeyEvent.VK_UP:
+                grid.changeDirection(Direction.UP);
+                break;
+            case KeyEvent.VK_DOWN:
+                grid.changeDirection(Direction.DOWN);
+                break;
+            case KeyEvent.VK_RIGHT:
+                grid.changeDirection(Direction.RIGHT);
+                break;
+            case KeyEvent.VK_LEFT:
+                grid.changeDirection(Direction.LEFT);
+                break;
+            default:
+                return;
         }
 
-        grid.nextRound();
-
+        assert grid.nextRound() : "FUUUUUCCCCCCCCCCCK";
         gameView.draw();
     }
 
