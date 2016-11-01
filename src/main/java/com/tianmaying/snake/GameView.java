@@ -43,7 +43,7 @@ public class GameView {
     }
 
     public void drawGridBackground(Graphics graphics) {
-        graphics.fillRect(0, 0, Settings.DEFAULT_GRID_WIDTH, Settings.DEFAULT_GRID_HEIGHT);
+        graphics.setColor(Settings.DEFAULT_BACKGROUND_COLOR);
     }
 
     private void drawSquare(Graphics graphics, Node squareArea, Color color) {
