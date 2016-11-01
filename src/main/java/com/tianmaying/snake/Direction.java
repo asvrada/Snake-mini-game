@@ -19,7 +19,7 @@ public enum Direction {
     /**
      * 判断方向改变是否有效，例如从向上变为向下为无效，从向上变为向左为有效
      * @param direction where to go next
-     * @return can you go this way?
+     * @return true if you can go this way
      */
     public boolean compatibleWith(Direction direction) {
         return Math.abs(direction.directionCode - directionCode) != 2;
