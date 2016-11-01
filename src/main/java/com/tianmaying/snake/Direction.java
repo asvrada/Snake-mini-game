@@ -22,6 +22,6 @@ public enum Direction {
      * @return can you go this way?
      */
     public boolean compatibleWith(Direction direction) {
-        return false;
+        return Math.abs(direction.directionCode - directionCode) != 2;
     }
 }
