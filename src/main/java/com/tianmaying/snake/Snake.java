@@ -40,16 +40,16 @@ public class Snake {
         Node newHead = null;
         switch (direction) {
             case UP:
-                newHead = new Node(headX, headY + 1);
-                break;
-            case DOWN:
                 newHead = new Node(headX, headY - 1);
                 break;
+            case DOWN:
+                newHead = new Node(headX, headY + 1);
+                break;
             case LEFT:
-                newHead = new Node(headX + 1, headY);
+                newHead = new Node(headX - 1, headY);
                 break;
             case RIGHT:
-                newHead = new Node(headX - 1, headY);
+                newHead = new Node(headX + 1, headY);
                 break;
             default:
                 break;
