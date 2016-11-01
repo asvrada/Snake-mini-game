@@ -2,7 +2,6 @@ package com.tianmaying.snake;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Set;
 
 /**
  * Created by jeff on 01/11/2016.
