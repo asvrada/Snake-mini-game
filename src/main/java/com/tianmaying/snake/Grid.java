@@ -50,9 +50,7 @@ public class Grid {
         }
 
         // Update grid status
-        for (Node each : snake.getBody()) {
-            status[each.getX()][each.getY()] = true;
-        }
+        snake.getBody().forEach(this::occupy);
 
         return snake;
     }
@@ -75,8 +73,6 @@ public class Grid {
 
     public boolean nextRound() {
         Node deletedTail = snake.move(snakeDirection);
-
-        boolean failed = false;
 
         // Head is NOT in valid position
         // Game Over
