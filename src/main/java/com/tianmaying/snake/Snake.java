@@ -55,7 +55,7 @@ public class Snake {
                 break;
         }
 
-        addTail(newHead);
+        body.addFirst(newHead);
 
         return body.removeLast();
     }
