@@ -24,6 +24,12 @@ public class Snake {
         return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY()) == 1;
     }
 
+    /**
+     * 往某个方向移动，蛇的身体可能会重叠，重叠判断由<code>Grid</code>处理。
+     *
+     * @param direction
+     * @return <code>Snake</code>原来的尾部，即最后一个<code>SquareArea</code>
+     */
     public Node move(Direction direction) {
         // 根据方向更新贪吃蛇的body
         // 返回移动之前的尾部Node
