@@ -1,4 +1,4 @@
-package xyz.noobjeff.snake;
+package com.tianmaying.snake;
 
 public class Node {
 	private final int x;

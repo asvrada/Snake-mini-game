@@ -1,4 +1,4 @@
-package xyz.noobjeff.snake;
+package com.tianmaying.snake;
 
 public enum Direction {
     UP(0),
