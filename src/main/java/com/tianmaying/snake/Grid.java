@@ -65,7 +65,7 @@ public class Grid {
         do {
             x = r.nextInt(width);
             y = r.nextInt(height);
-        } while (validPosition(new Node(x, y)));
+        } while (!validPosition(new Node(x, y)));
 
         food = new Node(x, y);
         return food;
