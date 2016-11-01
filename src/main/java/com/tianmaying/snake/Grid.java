@@ -34,6 +34,10 @@ public class Grid {
         return height;
     }
 
+    public Node getFood() {
+        return food;
+    }
+
     public Snake initSnake() {
         snake = new Snake();
 
@@ -79,7 +83,7 @@ public class Grid {
         if (!validPosition(snake.getHead())) {
             return false;
         }
-        
+
         // Update head to grid
         occupy(snake.getHead());
 
