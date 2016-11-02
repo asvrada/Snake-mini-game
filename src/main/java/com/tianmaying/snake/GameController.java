@@ -7,11 +7,15 @@ public class GameController implements Runnable, KeyListener {
     private Grid grid;
     private GameView gameView;
     private boolean running;
+    private boolean isPause;
+    private boolean allowChange;
 
     GameController(Grid grid, GameView gameView) {
         this.grid = grid;
         this.gameView = gameView;
         this.running = true;
+        this.isPause = false;
+        this.allowChange = true;
     }
 
     @Override
@@ -22,6 +26,10 @@ public class GameController implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
+
+        if (!allowChange) {
+            return;
+        }
 
         switch (keyCode) {
             case KeyEvent.VK_UP:
@@ -36,9 +44,18 @@ public class GameController implements Runnable, KeyListener {
             case KeyEvent.VK_LEFT:
                 grid.changeDirection(Direction.LEFT);
                 break;
+            case KeyEvent.VK_ENTER:
+                // TODO: 02/11/2016
+                grid.init();
+                break;
+            case KeyEvent.VK_SPACE:
+                isPause = !isPause;
+                break;
             default:
-                return;
+                break;
         }
+
+        allowChange = false;
     }
 
     @Override
@@ -51,10 +68,16 @@ public class GameController implements Runnable, KeyListener {
         while (running) {
             try {
                 Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
+                allowChange = true;
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
                 break;
+            }
+
+            // Pause game by skipping the nextRound
+            if (isPause) {
+                continue;
             }
             // 进入游戏下一步
             // 如果结束，则退出游戏
@@ -67,6 +90,5 @@ public class GameController implements Runnable, KeyListener {
             gameView.draw();
         }
 
-        running = false;
     }
 }

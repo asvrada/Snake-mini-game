@@ -1,5 +1,6 @@
 package com.tianmaying.snake;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Grid {
@@ -18,8 +19,18 @@ public class Grid {
 
         status = new boolean[width][height];
 
+        init();
+    }
+
+    public void init() {
+        // clear grid
+        for (int lop = 0; lop < width; lop++) {
+            Arrays.fill(status[lop], false);
+        }
+
         initSnake();
         createFood();
+        changeDirection(Direction.LEFT);
     }
 
     public Snake getSnake() {
