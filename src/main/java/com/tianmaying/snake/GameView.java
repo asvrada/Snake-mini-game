@@ -25,6 +25,10 @@ public class GameView {
         };
     }
 
+    public void showGameOverMessage() {
+        JOptionPane.showMessageDialog(null, "游戏结束", "游戏结束", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public void draw() {
         canvas.repaint();
     }
@@ -51,7 +55,6 @@ public class GameView {
         int size = Settings.DEFAULT_NODE_SIZE;
         graphics.fillRect(squareArea.getX() * size, squareArea.getY() * size, size - 1, size - 1);
     }
-
 
     private void drawCircle(Graphics graphics, Node squareArea, Color color) {
         graphics.setColor(color);

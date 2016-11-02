@@ -12,4 +12,5 @@ public class Settings {
     public static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
     public static final Color DEFAULT_FOOD_COLOR = Color.BLUE;
     public static final Color DEFAULT_SNAKE_COLOR = Color.WHITE;
+    public static final int DEFAULT_MOVE_INTERVAL = 300;
 }

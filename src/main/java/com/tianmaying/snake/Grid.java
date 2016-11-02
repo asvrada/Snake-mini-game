@@ -108,7 +108,6 @@ public class Grid {
         status[node.getX()][node.getY()] = true;
     }
 
-
     public boolean isFood(Node area) {
         int x = area.getX(), y = area.getY();
         return x == food.getX() && y == food.getY();
