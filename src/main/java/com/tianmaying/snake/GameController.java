@@ -10,7 +10,7 @@ public class GameController implements Runnable, KeyListener {
     private boolean isPause;
     private boolean isQuit;
 
-    private final Object feeder = new Object();
+    private final Object syncThread = new Object();
 
     GameController(Grid grid, GameView gameView) {
         this.grid = grid;
@@ -48,6 +48,7 @@ public class GameController implements Runnable, KeyListener {
                     grid.init();
                     isPause = false;
                     running = true;
+                    threadRun();
                 }
                 break;
             // pause the game
@@ -55,9 +56,7 @@ public class GameController implements Runnable, KeyListener {
                 isPause = !isPause;
                 // wake up
                 if (!isPause) {
-                    synchronized (feeder) {
-                        feeder.notify();
-                    }
+                    threadRun();
                 }
                 break;
             case KeyEvent.VK_ESCAPE:
@@ -65,6 +64,20 @@ public class GameController implements Runnable, KeyListener {
                 break;
             default:
                 break;
+        }
+    }
+
+    // put current thread into sleep
+    private void threadWait() throws InterruptedException {
+        synchronized (syncThread) {
+            syncThread.wait();
+        }
+    }
+
+    // wake up current thread
+    private void threadRun() {
+        synchronized (syncThread) {
+            syncThread.notify();
         }
     }
 
@@ -81,14 +94,12 @@ public class GameController implements Runnable, KeyListener {
                 Thread.sleep(100);
 
                 while (running && !isQuit) {
-                    Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
-
                     // Pause game
                     if (isPause) {
-                        synchronized (feeder) {
-                            feeder.wait();
-                        }
+                        threadWait();
                     }
+
+                    Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
 
                     // 进入游戏下一步
                     // 如果结束，则退出游戏
