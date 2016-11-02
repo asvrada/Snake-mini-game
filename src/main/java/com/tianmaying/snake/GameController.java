@@ -59,20 +59,6 @@ public class GameController implements Runnable, KeyListener {
         }
     }
 
-    // put current thread into sleep
-    private void threadWait() throws InterruptedException {
-        synchronized (syncThread) {
-            syncThread.wait();
-        }
-    }
-
-    // wake up current thread
-    private void threadRun() {
-        synchronized (syncThread) {
-            syncThread.notify();
-        }
-    }
-
     @Override
     public void keyReleased(KeyEvent e) {
 
@@ -88,10 +74,10 @@ public class GameController implements Runnable, KeyListener {
                 if (!grid.nextRound()) {
                     running = false;
                     gameView.showGameOverMessage();
-                } else {
-                    // 如果继续，则绘制新的游戏页面
-                    gameView.draw();
+                    break;
                 }
+                // 如果继续，则绘制新的游戏页面
+                gameView.draw();
 
                 Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
             }
