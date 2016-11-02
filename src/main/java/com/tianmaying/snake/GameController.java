@@ -19,7 +19,7 @@ public class GameController implements Runnable, KeyListener {
 
     private void init() {
         this.running = true;
-        this.isPause = true;
+        this.isPause = false;
     }
 
     @Override
