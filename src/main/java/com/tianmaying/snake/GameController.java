@@ -7,19 +7,14 @@ public class GameController implements Runnable, KeyListener {
     private Grid grid;
     private GameView gameView;
     private boolean running;
-    private boolean isPause;
 
     private final Object syncThread = new Object();
 
     GameController(Grid grid, GameView gameView) {
         this.grid = grid;
         this.gameView = gameView;
-        init();
-    }
 
-    private void init() {
-        this.running = true;
-        this.isPause = false;
+        running = true;
     }
 
     @Override
@@ -46,24 +41,17 @@ public class GameController implements Runnable, KeyListener {
                 break;
             // restart the game
             case KeyEvent.VK_ENTER:
-                if (isPause) {
-                    grid.init();
-                    init();
-                    threadRun();
-                }
                 if (!running) {
+                    running = true;
                     grid.init();
-                    init();
-                    // Really?
                     new Thread(this).start();
                 }
                 break;
             // pause the game
             case KeyEvent.VK_SPACE:
-                isPause = !isPause;
-                // wake up
-                if (!isPause) {
-                    threadRun();
+                running = !running;
+                if (running) {
+                    new Thread(this).start();
                 }
                 break;
             default:
@@ -95,11 +83,6 @@ public class GameController implements Runnable, KeyListener {
         try {
             // main game loop
             while (running) {
-                // Pause game
-                if (isPause) {
-                    threadWait();
-                }
-
                 // 进入游戏下一步
                 // 如果结束，则退出游戏
                 if (!grid.nextRound()) {
