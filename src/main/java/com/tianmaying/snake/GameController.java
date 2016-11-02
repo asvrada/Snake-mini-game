@@ -8,9 +8,8 @@ public class GameController implements Runnable, KeyListener {
     private GameView gameView;
     private boolean running;
     private boolean isPause;
-    private boolean isQuit;
 
-    private boolean isFirstStart = true;
+    private boolean onFirstStart = true;
 
     private final Object syncThread = new Object();
 
@@ -23,7 +22,6 @@ public class GameController implements Runnable, KeyListener {
     private void init() {
         this.running = true;
         this.isPause = false;
-        this.isQuit = false;
     }
 
     @Override
@@ -58,8 +56,8 @@ public class GameController implements Runnable, KeyListener {
                 break;
             // pause the game
             case KeyEvent.VK_SPACE:
-                if (isFirstStart) {
-                    isFirstStart = false;
+                if (onFirstStart) {
+                    onFirstStart = false;
                     new Thread(this).start();
                     break;
                 }
@@ -68,9 +66,6 @@ public class GameController implements Runnable, KeyListener {
                 if (!isPause) {
                     threadRun();
                 }
-                break;
-            case KeyEvent.VK_ESCAPE:
-                isQuit = true;
                 break;
             default:
                 break;
@@ -100,30 +95,27 @@ public class GameController implements Runnable, KeyListener {
     public void run() {
         try {
             // main game loop
-            while (!isQuit) {
-                Thread.sleep(100);
-
-                while (running && !isQuit) {
-                    // Pause game
-                    if (isPause) {
-                        threadWait();
-                    }
-
-                    Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
-
-                    // 进入游戏下一步
-                    // 如果结束，则退出游戏
-                    if (!grid.nextRound()) {
-                        running = false;
-                        gameView.showGameOverMessage();
-                    } else {
-                        // 如果继续，则绘制新的游戏页面
-                        gameView.draw();
-                    }
+            while (running) {
+                // Pause game
+                if (isPause) {
+                    threadWait();
                 }
 
-                running = false;
+                // 进入游戏下一步
+                // 如果结束，则退出游戏
+                if (!grid.nextRound()) {
+                    running = false;
+                    gameView.showGameOverMessage();
+                    threadWait();
+                } else {
+                    // 如果继续，则绘制新的游戏页面
+                    gameView.draw();
+                }
+
+                Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
             }
+
+            running = false;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
