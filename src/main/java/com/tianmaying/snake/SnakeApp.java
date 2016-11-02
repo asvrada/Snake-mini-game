@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class SnakeApp {
     public void init() {
-        Grid grid = new Grid(20, 20);
+        Grid grid = new Grid(Settings.DEFAULT_GRID_WIDTH / Settings.DEFAULT_NODE_SIZE, Settings.DEFAULT_GRID_HEIGHT / Settings.DEFAULT_NODE_SIZE);
         GameView gameView = new GameView(grid);
         GameController gameController = new GameController(grid, gameView);
 
@@ -25,6 +25,8 @@ public class SnakeApp {
         window.addKeyListener(gameController);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
+
+        new Thread(gameController).start();
     }
 
     public static void main(String[] args) {
