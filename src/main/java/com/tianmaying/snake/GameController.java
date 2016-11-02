@@ -8,7 +8,6 @@ public class GameController implements Runnable, KeyListener {
     private GameView gameView;
     private boolean running;
     private boolean isPause;
-    private boolean allowChange;
     private boolean isQuit;
 
     GameController(Grid grid, GameView gameView) {
@@ -16,7 +15,6 @@ public class GameController implements Runnable, KeyListener {
         this.gameView = gameView;
         this.running = true;
         this.isPause = false;
-        this.allowChange = true;
         this.isQuit = false;
     }
 
@@ -31,47 +29,32 @@ public class GameController implements Runnable, KeyListener {
 
         switch (keyCode) {
             case KeyEvent.VK_UP:
-                if (allowChange) {
-                    allowChange = false;
-                    grid.changeDirection(Direction.UP);
-                }
+                grid.changeDirection(Direction.UP);
                 break;
             case KeyEvent.VK_DOWN:
-                if (allowChange) {
-                    allowChange = false;
-                    grid.changeDirection(Direction.DOWN);
-                }
+                grid.changeDirection(Direction.DOWN);
                 break;
             case KeyEvent.VK_RIGHT:
-                if (allowChange) {
-                    allowChange = false;
-                    grid.changeDirection(Direction.RIGHT);
-                }
+                grid.changeDirection(Direction.RIGHT);
                 break;
             case KeyEvent.VK_LEFT:
-                if (allowChange) {
-                    allowChange = false;
-                    grid.changeDirection(Direction.LEFT);
-                }
+                grid.changeDirection(Direction.LEFT);
                 break;
             // restart the game
             case KeyEvent.VK_ENTER:
                 if (isPause || !running) {
                     grid.init();
                     isPause = false;
-                    allowChange = true;
                     running = true;
                 }
                 break;
             // pause the game
             case KeyEvent.VK_SPACE:
                 isPause = !isPause;
-                if (isPause) {
-                    allowChange = false;
-                }
                 break;
             case KeyEvent.VK_ESCAPE:
                 isQuit = true;
+                break;
             default:
                 break;
         }
@@ -96,7 +79,6 @@ public class GameController implements Runnable, KeyListener {
                     if (isPause) {
                         continue;
                     }
-                    allowChange = true;
 
                     // 进入游戏下一步
                     // 如果结束，则退出游戏
