@@ -66,7 +66,12 @@ public class GameController implements Runnable, KeyListener {
             // pause the game
             case KeyEvent.VK_SPACE:
                 isPause = !isPause;
+                if (isPause) {
+                    allowChange = false;
+                }
                 break;
+            case KeyEvent.VK_ESCAPE:
+                isQuit = true;
             default:
                 break;
         }
@@ -79,6 +84,7 @@ public class GameController implements Runnable, KeyListener {
 
     @Override
     public void run() {
+        // main game loop
         while (!isQuit) {
             try {
                 Thread.sleep(100);
@@ -86,7 +92,7 @@ public class GameController implements Runnable, KeyListener {
                 e.printStackTrace();
             }
 
-            while (running) {
+            while (running && !isQuit) {
                 try {
                     Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
                 } catch (InterruptedException e) {
@@ -109,6 +115,8 @@ public class GameController implements Runnable, KeyListener {
                     gameView.draw();
                 }
             }
+
+            running = false;
         }
     }
 }
