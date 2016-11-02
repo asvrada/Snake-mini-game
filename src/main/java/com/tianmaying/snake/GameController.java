@@ -79,6 +79,7 @@ public class GameController implements Runnable, KeyListener {
             if (isPause) {
                 continue;
             }
+
             // 进入游戏下一步
             // 如果结束，则退出游戏
             if (!grid.nextRound()) {
