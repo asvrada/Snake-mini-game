@@ -29,10 +29,6 @@ public class GameController implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        if (!allowChange) {
-            return;
-        }
-
         switch (keyCode) {
             case KeyEvent.VK_UP:
                 grid.changeDirection(Direction.UP);
@@ -57,8 +53,6 @@ public class GameController implements Runnable, KeyListener {
             default:
                 break;
         }
-
-        allowChange = false;
     }
 
     @Override
