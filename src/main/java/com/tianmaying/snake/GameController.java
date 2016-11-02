@@ -9,6 +9,7 @@ public class GameController implements Runnable, KeyListener {
     private boolean running;
     private boolean isPause;
     private boolean allowChange;
+    private boolean isQuit;
 
     GameController(Grid grid, GameView gameView) {
         this.grid = grid;
@@ -16,6 +17,7 @@ public class GameController implements Runnable, KeyListener {
         this.running = true;
         this.isPause = false;
         this.allowChange = true;
+        this.isQuit = false;
     }
 
     @Override
@@ -45,8 +47,9 @@ public class GameController implements Runnable, KeyListener {
                 grid.changeDirection(Direction.LEFT);
                 break;
             case KeyEvent.VK_ENTER:
-                // TODO: 02/11/2016
                 grid.init();
+                isPause = false;
+                running = true;
                 break;
             case KeyEvent.VK_SPACE:
                 isPause = !isPause;
@@ -67,8 +70,8 @@ public class GameController implements Runnable, KeyListener {
     public void run() {
         while (running) {
             try {
-                Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
                 allowChange = true;
+                Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
@@ -85,10 +88,10 @@ public class GameController implements Runnable, KeyListener {
             if (!grid.nextRound()) {
                 running = false;
                 gameView.showGameOverMessage();
+            } else {
+                // 如果继续，则绘制新的游戏页面
+                gameView.draw();
             }
-
-            // 如果继续，则绘制新的游戏页面
-            gameView.draw();
         }
 
     }

@@ -28,9 +28,9 @@ public class Grid {
             Arrays.fill(status[lop], false);
         }
 
+        snakeDirection = Direction.LEFT;
         initSnake();
         createFood();
-        changeDirection(Direction.LEFT);
     }
 
     public Snake getSnake() {
