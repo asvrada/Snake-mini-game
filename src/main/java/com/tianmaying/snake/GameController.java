@@ -10,11 +10,17 @@ public class GameController implements Runnable, KeyListener {
     private boolean isPause;
     private boolean isQuit;
 
+    private boolean isFirstStart = true;
+
     private final Object syncThread = new Object();
 
     GameController(Grid grid, GameView gameView) {
         this.grid = grid;
         this.gameView = gameView;
+        init();
+    }
+
+    private void init() {
         this.running = true;
         this.isPause = false;
         this.isQuit = false;
@@ -46,13 +52,17 @@ public class GameController implements Runnable, KeyListener {
             case KeyEvent.VK_ENTER:
                 if (isPause || !running) {
                     grid.init();
-                    isPause = false;
-                    running = true;
+                    init();
                     threadRun();
                 }
                 break;
             // pause the game
             case KeyEvent.VK_SPACE:
+                if (isFirstStart) {
+                    isFirstStart = false;
+                    new Thread(this).start();
+                    break;
+                }
                 isPause = !isPause;
                 // wake up
                 if (!isPause) {
