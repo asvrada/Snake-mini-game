@@ -46,11 +46,16 @@ public class GameController implements Runnable, KeyListener {
                 break;
             // restart the game
             case KeyEvent.VK_ENTER:
-                if (isPause || !running) {
+                if (isPause) {
                     grid.init();
                     init();
                     threadRun();
-                    gameView.draw();
+                }
+                if (!running) {
+                    grid.init();
+                    init();
+                    // Really?
+                    new Thread(this).start();
                 }
                 break;
             // pause the game
@@ -100,7 +105,6 @@ public class GameController implements Runnable, KeyListener {
                 if (!grid.nextRound()) {
                     running = false;
                     gameView.showGameOverMessage();
-                    threadWait();
                 } else {
                     // 如果继续，则绘制新的游戏页面
                     gameView.draw();
@@ -108,7 +112,6 @@ public class GameController implements Runnable, KeyListener {
 
                 Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
             }
-
             running = false;
         } catch (InterruptedException e) {
             e.printStackTrace();
