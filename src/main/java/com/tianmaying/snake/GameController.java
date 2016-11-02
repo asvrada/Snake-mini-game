@@ -96,11 +96,6 @@ public class GameController implements Runnable, KeyListener {
         try {
             // main game loop
             while (running) {
-                // Pause game
-                if (isPause) {
-                    threadWait();
-                }
-
                 // 进入游戏下一步
                 // 如果结束，则退出游戏
                 if (!grid.nextRound()) {
@@ -110,6 +105,11 @@ public class GameController implements Runnable, KeyListener {
                 } else {
                     // 如果继续，则绘制新的游戏页面
                     gameView.draw();
+                }
+
+                // Pause game
+                if (isPause) {
+                    threadWait();
                 }
 
                 Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
