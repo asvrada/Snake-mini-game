@@ -31,16 +31,28 @@ public class GameController implements Runnable, KeyListener {
 
         switch (keyCode) {
             case KeyEvent.VK_UP:
-                grid.changeDirection(Direction.UP);
+                if (allowChange) {
+                    allowChange = false;
+                    grid.changeDirection(Direction.UP);
+                }
                 break;
             case KeyEvent.VK_DOWN:
-                grid.changeDirection(Direction.DOWN);
+                if (allowChange) {
+                    allowChange = false;
+                    grid.changeDirection(Direction.DOWN);
+                }
                 break;
             case KeyEvent.VK_RIGHT:
-                grid.changeDirection(Direction.RIGHT);
+                if (allowChange) {
+                    allowChange = false;
+                    grid.changeDirection(Direction.RIGHT);
+                }
                 break;
             case KeyEvent.VK_LEFT:
-                grid.changeDirection(Direction.LEFT);
+                if (allowChange) {
+                    allowChange = false;
+                    grid.changeDirection(Direction.LEFT);
+                }
                 break;
             case KeyEvent.VK_ENTER:
                 grid.init();
@@ -62,31 +74,37 @@ public class GameController implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        while (running) {
+        while (!isQuit) {
             try {
-                allowChange = true;
-                Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                Thread.currentThread().interrupt();
-                break;
             }
 
-            // Pause game by skipping the nextRound
-            if (isPause) {
-                continue;
-            }
+            while (running) {
+                allowChange = true;
+                try {
+                    Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-            // 进入游戏下一步
-            // 如果结束，则退出游戏
-            if (!grid.nextRound()) {
-                running = false;
-                gameView.showGameOverMessage();
-            } else {
-                // 如果继续，则绘制新的游戏页面
-                gameView.draw();
+
+                // Pause game by skipping the nextRound
+                if (isPause) {
+                    continue;
+                }
+
+                // 进入游戏下一步
+                // 如果结束，则退出游戏
+                if (!grid.nextRound()) {
+                    running = false;
+                    gameView.showGameOverMessage();
+                } else {
+                    // 如果继续，则绘制新的游戏页面
+                    gameView.draw();
+                }
             }
         }
-
     }
 }
