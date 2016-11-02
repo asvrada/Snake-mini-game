@@ -10,7 +10,7 @@ public class Grid {
 
     private Snake snake;
     private Node food;
-    private Direction currentDirection = Direction.LEFT;
+    private Direction snakeDirection = Direction.LEFT;
     private Direction prevDirection = Direction.LEFT;
 
     private final int width;
@@ -31,7 +31,7 @@ public class Grid {
             Arrays.fill(status[lop], false);
         }
 
-        currentDirection = Direction.LEFT;
+        snakeDirection = Direction.LEFT;
         prevDirection = Direction.LEFT;
         initSnake();
         createFood();
@@ -85,8 +85,8 @@ public class Grid {
     }
 
     public boolean nextRound() {
-        Node deletedTail = snake.move(currentDirection);
-        prevDirection = currentDirection;
+        Node deletedTail = snake.move(snakeDirection);
+        prevDirection = snakeDirection;
 
         // Head is NOT in valid position
         // Game Over
@@ -129,7 +129,7 @@ public class Grid {
 
     public void changeDirection(Direction newDirection) {
         if (prevDirection.compatibleWith(newDirection)) {
-            currentDirection = newDirection;
+            snakeDirection = newDirection;
         }
     }
 }

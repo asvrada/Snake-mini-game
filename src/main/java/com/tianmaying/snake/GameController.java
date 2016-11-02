@@ -10,6 +10,8 @@ public class GameController implements Runnable, KeyListener {
     private boolean isPause;
     private boolean isQuit;
 
+    private final Object feeder = new Object();
+
     GameController(Grid grid, GameView gameView) {
         this.grid = grid;
         this.gameView = gameView;
@@ -51,6 +53,12 @@ public class GameController implements Runnable, KeyListener {
             // pause the game
             case KeyEvent.VK_SPACE:
                 isPause = !isPause;
+                // wake up
+                if (!isPause) {
+                    synchronized (feeder) {
+                        feeder.notify();
+                    }
+                }
                 break;
             case KeyEvent.VK_ESCAPE:
                 isQuit = true;
@@ -75,9 +83,11 @@ public class GameController implements Runnable, KeyListener {
                 while (running && !isQuit) {
                     Thread.sleep(Settings.DEFAULT_MOVE_INTERVAL);
 
-                    // Pause game by skipping the nextRound
+                    // Pause game
                     if (isPause) {
-                        continue;
+                        synchronized (feeder) {
+                            feeder.wait();
+                        }
                     }
 
                     // 进入游戏下一步
