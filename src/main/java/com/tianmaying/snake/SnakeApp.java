@@ -26,6 +26,7 @@ public class SnakeApp {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
 
+        // Start controller thread
         new Thread(gameController).start();
     }
 

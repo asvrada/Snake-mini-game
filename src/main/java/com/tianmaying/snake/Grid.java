@@ -4,11 +4,14 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Grid {
+    private static Random r = new Random();
+
     public final boolean[][] status;
 
     private Snake snake;
     private Node food;
     private Direction snakeDirection = Direction.LEFT;
+    private Direction prevDirection = Direction.LEFT;
 
     private final int width;
     private final int height;
@@ -29,6 +32,7 @@ public class Grid {
         }
 
         snakeDirection = Direction.LEFT;
+        prevDirection = Direction.LEFT;
         initSnake();
         createFood();
     }
@@ -70,8 +74,6 @@ public class Grid {
         int x;
         int y;
 
-        Random r = new Random();
-
         // 使用Random设置x和y
         do {
             x = r.nextInt(width);
@@ -84,6 +86,7 @@ public class Grid {
 
     public boolean nextRound() {
         Node deletedTail = snake.move(snakeDirection);
+        prevDirection = snakeDirection;
 
         // Head is NOT in valid position
         // Game Over
@@ -94,7 +97,7 @@ public class Grid {
         // Update head to grid
         occupy(snake.getHead());
 
-        // if food eaten
+        // if food is eaten
         if (isFood(snake.getHead())) {
             snake.addTail(deletedTail);
             createFood();
@@ -125,7 +128,7 @@ public class Grid {
     }
 
     public void changeDirection(Direction newDirection) {
-        if (snakeDirection.compatibleWith(newDirection)) {
+        if (prevDirection.compatibleWith(newDirection)) {
             snakeDirection = newDirection;
         }
     }
